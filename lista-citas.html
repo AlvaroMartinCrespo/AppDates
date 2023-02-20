@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes-citas</title>
+    <link rel="stylesheet" href="css/tailwind.min.css">
+</head>
+
+<body class="min-h-100 bg-gray-200">
+    <div class="md:flex min-h-screen md:align-top">
+        <aside class="md:w-2/5 lg:w-2/5 xl:w-1/5 bg-teal-600 px-5 py-10">
+            <h1 class="uppercase text-white tracking-wide text-2xl  font-bold mt-2">Clientes - citas</h1>
+            <p class="mt-10 text-white">Administración de clientes y citas</p>
+            <nav class="mt-8">
+                <a href="#" id="eliminarBD" class="px-3 py-1 text-white block hover:bg-teal-900 mt-2 hover:text-yellow-400">Eliminar base de datos</a>
+            </nav>
+        </aside>
+        <main class="md:w-3/5  xl:w-4/5 px-5 py-10 bg-gray-200 flex flex-col items-center">
+            <h2 class="text-3xl font-light text-center">Citas</h2>
+            <h2 id="cita-cliente" class="text-2xl font-light text-center mt-3"></h2>
+
+            <div class="flex flex-col mt-10 min-w-full">
+                <div class="py-2 overflow-x-auto">
+                    <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-100 ">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 border-b border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                                        Fecha
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 border-b border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                                        Hora
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 border-b border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                                        Descripción
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 border-b border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                                        Detalles
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 border-b border-gray-200  text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="listado-citas" class="bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-row items-start justify-center gap-4 mt-10 min-w-full">
+                <input
+                    type="button"
+                    id="crearCita"
+                    class="bg-teal-600 hover:bg-teal-900 w-64 mt-0 p-2 text-white uppercase font-bold"
+                    value="Crear cita"
+                />
+
+                <input
+                    type="button"
+                    id="volverClientes"
+                    class="bg-teal-600 hover:bg-teal-900 w-64 mt-0 p-2 text-white uppercase font-bold"
+                    value="Volver a lista de clientes"
+                />
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/ignorar.js"></script>
+    <script type="module" src="js/listaCitas.js"></script>
+</body>
+
+</html>

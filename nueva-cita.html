@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes-citas</title>
+    <link rel="stylesheet" href="css/tailwind.min.css">
+</head>
+<body class="min-h-100 bg-gray-200">
+    <div class="md:flex min-h-screen md:align-top">
+        <aside class="md:w-2/5 lg:w-2/5 xl:w-1/5 bg-teal-600 px-5 py-10">
+            <h1 class="uppercase text-white tracking-wide text-2xl  font-bold mt-2">Clientes - citas</h1>
+            <p class="mt-10 text-white">Administración de clientes y citas</p>
+            <nav class="mt-8">
+                <a href="#" id="eliminarBD" class="px-3 py-1 text-white block hover:bg-teal-900 mt-2 hover:text-yellow-400">Eliminar base de datos</a>
+            </nav>
+        </aside> <!--sidebar-->
+        <main class="md:w-3/5  xl:w-4/5 px-5 py-10 bg-gray-200">
+            <h2 class="text-3xl font-light text-center">Nueva Cita</h2>
+            <h2 id="cita-cliente" class="text-2xl font-light text-center mt-3"></h2>
+            <div class="flex flex-col mt-10 items-center">
+                <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 w-10/12 md:w-8/12 lg:w-6/12">
+                    <div class=" shadow overflow-hidden sm:rounded-lg border-b border-gray-200 ">
+                        <form id="formulario" class="bg-white p-3">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha">Fecha:</label>
+                                <input 
+                                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline auto-validable"
+                                    id="fecha"
+                                    name="fecha"
+                                    type="date"
+                                />
+                                <p id="error-fecha" class="text-red-600 text-xs"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="hora">Hora:</label>
+                                <input 
+                                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline auto-validable"
+                                    id="hora"
+                                    name="hora"
+                                    type="time"
+                                />
+                                <p id="error-hora" class="text-red-600 text-xs"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="descripcion">Descripción</label>
+                                <textarea
+                                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline auto-validable"
+                                    id="descripcion"
+                                    name="descripcion"
+                                    rows="3"></textarea>
+                                <p id="error-descripcion" class="text-red-600 text-xs"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="detalles">Detalles</label>
+                                <textarea
+                                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline auto-validable"
+                                    id="detalles"
+                                    name="detalles"
+                                    rows="5"></textarea><br>
+                                <p id="error-detalles" class="text-red-600 text-xs"></p>
+                            </div>
+
+                            <div class="flex flex-row items-start justify-center gap-4 mt-10 min-w-full">
+                                <input
+                                    type="submit"
+                                    class="bg-teal-600 hover:bg-teal-900 w-full mt-5 p-2 text-white uppercase font-bold"
+                                    value="Agregar Cita"
+                                />
+                                <input
+                                    type="button"
+                                    id="cancelar"
+                                    class="bg-teal-600 hover:bg-teal-900 w-full mt-5 p-2 text-white uppercase font-bold"
+                                    value="Cancelar"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/ignorar.js"></script>
+    <script type="module" src="js/nuevacita.js"></script>
+</body>
+</html>
