@@ -5,10 +5,41 @@ import { ControladorPHP as Controlador } from './controlador.js';
 listener();
 
 /**
- * Listener que comprueba que la página esta cargada para cargar los clientes.
+ * Creación de listeners para el correcto funcionamiento de la página.
  */
 function listener() {
   window.addEventListener('load', cargarClientes, false);
+  document.getElementById('crearCliente').addEventListener('click', crearCliente, false);
+  window.addEventListener('click', redireccionar, false);
+}
+
+/**
+ * Redicciona a la página correspondiente según el botón al que haga click.
+ * @param {evento} e
+ */
+function redireccionar(e) {
+  for (let index = 0; index < e.target.classList.length; index++) {
+    if (e.target.classList[index] === 'crearCita') {
+      window.location.href = './nueva-cita.html';
+    } else if (e.target.classList[index] === 'verCitas') {
+      localStorage.clear();
+      const nombreCliente = e.target.getAttribute('data-clientenombre');
+      const nifCliente = e.target.getAttribute('data-clientenif');
+      const apellidosCliente = e.target.getAttribute('data-clienteapellidos');
+      localStorage.setItem('nombreCliente', nombreCliente);
+      localStorage.setItem('nifCliente', nifCliente);
+      localStorage.setItem('apellidosCliente', apellidosCliente);
+      window.location.href = './lista-citas.html';
+    } else if (e.target.classList[index] === 'eliminar') {
+    }
+  }
+}
+
+/**
+ * Al pulsarel botón redirecciona la página a crear-cliente.html.
+ */
+function crearCliente() {
+  window.location.href = './nuevo-cliente.html';
 }
 
 /**
@@ -56,25 +87,25 @@ function crearHTMLCliente(cliente) {
           <a
             href="#"
             class="block text-teal-600 hover:text-teal-900 mr-2 crearCita"
-            data-clientenombre="Juan"
-            data-clienteapellidos="Jiménez Gómez"
-            data-clientenif="33489123F"
+            data-clientenombre="${cliente.nombre}"
+            data-clienteapellidos="${cliente.apellidos}"
+            data-clientenif="${cliente.nif}"
             >Crear cita</a
           >
           <a
             href="#"
             class="block text-teal-600 hover:text-teal-900 mr-2 verCitas"
-            data-clientenombre="Juan"
-            dataclienteapellidos="Jiménez Gómez"
-            data-clientenif="33489123F"
+            data-clientenombre="${cliente.nombre}"
+            data-clienteapellidos="${cliente.apellidos}"
+            data-clientenif="${cliente.nif}"
             >Ver citas</a
           >
           <a
             href="#"
             class="block text-red-600 hover:text-red-900 eliminar"
-            data-clientenombre="Juan"
-            dataclienteapellidos="Jiménez Gómez"
-            data-clientenif="33489123F"
+            data-clientenombre="${cliente.nombre}"
+            data-clienteapellidos="${cliente.apellidos}"
+            data-clientenif="${cliente.nif}"
             >Eliminar cliente</a
           >
         </td>
