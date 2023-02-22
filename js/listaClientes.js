@@ -4,6 +4,8 @@ import { ControladorPHP as Controlador } from './controlador.js';
 
 listener();
 
+console.log(document.querySelector('.eliminar'));
+
 /**
  * Creación de listeners para el correcto funcionamiento de la página.
  */
@@ -20,8 +22,13 @@ function listener() {
 function redireccionar(e) {
   for (let index = 0; index < e.target.classList.length; index++) {
     if (e.target.classList[index] === 'crearCita') {
+      //Almacenamos en el localstorage el nif ya que lo necesitamos para la cita
+      localStorage.clear();
+      const nifCliente = e.target.getAttribute('data-clientenif');
+      localStorage.setItem('nifCliente', nifCliente);
       window.location.href = './nueva-cita.html';
     } else if (e.target.classList[index] === 'verCitas') {
+      //Guardamos en el localstorage todos los datos del cliente para ver la cita de los clientes
       localStorage.clear();
       const nombreCliente = e.target.getAttribute('data-clientenombre');
       const nifCliente = e.target.getAttribute('data-clientenif');
@@ -31,8 +38,24 @@ function redireccionar(e) {
       localStorage.setItem('apellidosCliente', apellidosCliente);
       window.location.href = './lista-citas.html';
     } else if (e.target.classList[index] === 'eliminar') {
+      //Se obtienen los datos del cliente
+      const nombreCliente = e.target.getAttribute('data-clientenombre');
+      const apellidoCliente = e.target.getAttribute('data-clienteapellidos');
+      if (window.confirm(`Seguro que deseas eliminar al cliente ${nombreCliente} ${apellidoCliente}`)) {
+      }
     }
   }
+}
+/**
+ * Obtenemos los datos del cliente y lo devolvemos como un objetos
+ * Utilizar esta función para obtener los datos de arriba.
+ */
+function obtenerDatosClientes() {
+  return (datos = {
+    nombre: 'nombre',
+    apellidos: 'apellidos',
+    nif: 'nif',
+  });
 }
 
 /**

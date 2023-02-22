@@ -63,7 +63,6 @@ function recogerDatosFormulario() {
   let datos = {};
   const formulario = document.getElementById('formulario');
   const formularioDatos = new FormData(formulario);
-  console.log(formularioDatos.get('nombre'));
   return (datos = {
     nombre: formularioDatos.get('nombre'),
     apellidos: formularioDatos.get('apellidos'),

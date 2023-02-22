@@ -8,6 +8,7 @@ listerners();
 function listerners() {
   window.addEventListener('load', tratarDatos, false);
   document.getElementById('volverClientes').addEventListener('click', redireccionarIndex, false);
+  document.querySelector('.eliminar').addEventListener('click', eliminarCita, false);
 }
 
 /**
@@ -32,6 +33,8 @@ async function tratarDatos() {
   nombreApellidosClientes(nombreApellidosClienteObject);
   citas(respuestaServidor.datos);
 }
+
+function eliminarCita() {}
 
 function citas(respuesta) {
   for (let index = 0; index < respuesta.length; index++) {

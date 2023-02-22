@@ -97,4 +97,54 @@ export class ControladorPHP {
     }
     return respuestaJSON;
   }
+
+  /**
+   * Se le pasa el objeto cita y mediante fetch se lo mandamos al servidor y nos devolvera una respuesta
+   * @param {object} cita
+   * @returns respuesta del servidor
+   */
+  static async enviarCitas(cita) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'getCitasCliente',
+          nifCliente: cita,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
+
+  /**
+   * Se le pasa el nif del cliente para eliminar al cliente, el servidor nos devuelve una respuesta.
+   * @param {string} nifCliente
+   * @returns respuesta del servidor
+   */
+  static async eliminarCliente(nifCliente) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'eliminarCliente',
+          nifCliente: nifCliente,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
 }
