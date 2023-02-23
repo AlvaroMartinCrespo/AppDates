@@ -8,7 +8,8 @@ listerners();
 function listerners() {
   window.addEventListener('load', tratarDatos, false);
   document.getElementById('volverClientes').addEventListener('click', redireccionarIndex, false);
-  document.querySelector('.eliminar').addEventListener('click', eliminarCita, false);
+  window.addEventListener('click', eliminarCita, false);
+  // document.querySelector('.eliminar').addEventListener('click', eliminarCita, false);
 }
 
 /**
@@ -33,9 +34,31 @@ async function tratarDatos() {
   nombreApellidosClientes(nombreApellidosClienteObject);
   citas(respuestaServidor.datos);
 }
+/**
+ * Comprobamos que el botón pulsado es el botón de eliminar cita, obtenemos el id de la cita del elemento y se lo pasamos a la función del controlador de eliminar la cita, nos devolerá una respuesta.
+ * @param {evento} e
+ */
+async function eliminarCita(e) {
+  for (let index = 0; index < e.target.classList.length; index++) {
+    if (e.target.classList[index] === 'eliminar') {
+      const idCita = e.target.getAttribute('data-citaid');
+      const nifCliente = e.target.getAttribute('data-nifcliente');
+      const datosCita = await Controlador.citaClienteId(nifCliente);
+      console.log(datosCita);
+      if (
+        window.confirm(`Seguro que desea eliminar la cita del ${console.log('fecha')} a las ${console.log('horaCita')}`)
+      ) {
+        const respuesta = await Controlador.eliminarCita(idCita);
+        window.location.href = './lista-citas.html';
+      }
+    }
+  }
+}
 
-function eliminarCita() {}
-
+/**
+ * Obtiene la respuesta del servidor, llama a la funcion para crear la plantilla con la respuesta y luego llama a la función para insertar la plantilla en el HTML.
+ * @param {json} respuesta
+ */
 function citas(respuesta) {
   for (let index = 0; index < respuesta.length; index++) {
     const html = crearHTMLCitasClientes(respuesta[index]);
@@ -43,10 +66,19 @@ function citas(respuesta) {
   }
 }
 
+/**
+ * Obtiene la plantilla HTML de la cita con los datos y lo introduce en el elemento correspondiente.
+ * @param {string} cita
+ */
 function insertarCitasHTML(cita) {
   document.getElementById('listado-citas').innerHTML += cita;
 }
 
+/**
+ * Crea la plantilla HTML con los datos de la cita que se va a imprimir por pantalla.
+ * @param {Json} datos
+ * @returns plantilla HTML con los datos de la cita.
+ */
 function crearHTMLCitasClientes(datos) {
   return `
   

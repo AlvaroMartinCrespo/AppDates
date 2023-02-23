@@ -138,6 +138,56 @@ export class ControladorPHP {
         },
         body: JSON.stringify({
           metodo: 'eliminarCliente',
+          nif: nifCliente,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
+
+  /**
+   * Se le pasa el id de la cita y lo manda al servidor junto con el metodo eliminarCita, el servidor nos retornara una respuesta.
+   * @param {number} idCita
+   * @returns respuesta  del servidor
+   */
+  static async eliminarCita(idCita) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'eliminarCita',
+          id: idCita,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
+
+  /**
+   * Le pasamos el nif del cliente, y la manda junto con el método getCitasCliente al servidor, nos dará una respuesta con la cita del cliente que tenga ese nif.
+   * @param {number} idCita
+   * @returns respuesta del servidor
+   */
+  static async citaClienteId(nifCliente) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'getCitasCliente',
           nifCliente: nifCliente,
         }),
       });

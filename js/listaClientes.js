@@ -4,8 +4,6 @@ import { ControladorPHP as Controlador } from './controlador.js';
 
 listener();
 
-console.log(document.querySelector('.eliminar'));
-
 /**
  * Creación de listeners para el correcto funcionamiento de la página.
  */
@@ -19,42 +17,68 @@ function listener() {
  * Redicciona a la página correspondiente según el botón al que haga click.
  * @param {evento} e
  */
-function redireccionar(e) {
+async function redireccionar(e) {
   for (let index = 0; index < e.target.classList.length; index++) {
     if (e.target.classList[index] === 'crearCita') {
-      //Almacenamos en el localstorage el nif ya que lo necesitamos para la cita
-      localStorage.clear();
-      const nifCliente = e.target.getAttribute('data-clientenif');
-      localStorage.setItem('nifCliente', nifCliente);
-      window.location.href = './nueva-cita.html';
+      crearCita(e);
     } else if (e.target.classList[index] === 'verCitas') {
-      //Guardamos en el localstorage todos los datos del cliente para ver la cita de los clientes
-      localStorage.clear();
-      const nombreCliente = e.target.getAttribute('data-clientenombre');
-      const nifCliente = e.target.getAttribute('data-clientenif');
-      const apellidosCliente = e.target.getAttribute('data-clienteapellidos');
-      localStorage.setItem('nombreCliente', nombreCliente);
-      localStorage.setItem('nifCliente', nifCliente);
-      localStorage.setItem('apellidosCliente', apellidosCliente);
-      window.location.href = './lista-citas.html';
+      verCitas(e);
     } else if (e.target.classList[index] === 'eliminar') {
-      //Se obtienen los datos del cliente
-      const nombreCliente = e.target.getAttribute('data-clientenombre');
-      const apellidoCliente = e.target.getAttribute('data-clienteapellidos');
-      if (window.confirm(`Seguro que deseas eliminar al cliente ${nombreCliente} ${apellidoCliente}`)) {
-      }
+      await eliminarCliente(e);
     }
   }
 }
+
 /**
- * Obtenemos los datos del cliente y lo devolvemos como un objetos
- * Utilizar esta función para obtener los datos de arriba.
+ * Almacenamos en el localstorage el nif ya que lo necesitamos para la cita
+ * @param {event} e
  */
-function obtenerDatosClientes() {
+function crearCita(e) {
+  localStorage.clear();
+  const { nif } = obtenerDatosClientes(e);
+  localStorage.setItem('nifCliente', nif);
+  window.location.href = './nueva-cita.html';
+}
+
+/**
+ * Guardamos en el localstorage todos los datos del cliente para ver la cita de los clientes
+ * @param {event} e
+ */
+function verCitas(e) {
+  localStorage.clear();
+  const { nombre, apellidos, nif } = obtenerDatosClientes(e);
+  localStorage.setItem('nombreCliente', nombre);
+  localStorage.setItem('nifCliente', nif);
+  localStorage.setItem('apellidosCliente', apellidos);
+  window.location.href = './lista-citas.html';
+}
+
+/**
+ * Se obtienen los datos del cliente, se elimina y hace una redirección al index para cargar de nuevo los datos.
+ * @param {event} e
+ */
+async function eliminarCliente(e) {
+  const { nombre, apellidos, nif } = obtenerDatosClientes(e);
+  if (window.confirm(`Seguro que deseas eliminar al cliente ${nombre} ${apellidos}`)) {
+    const respuesta = await Controlador.eliminarCliente(nif);
+    window.location.href = './index.html';
+  }
+}
+
+/**
+ * Se le pasa el evento y se obtienen del elemento del evento los datos del cliente.
+ * @param {event} e
+ * @returns objeto con los datos del cliente
+ */
+function obtenerDatosClientes(e) {
+  let datos = {};
+  const nombreCliente = e.target.getAttribute('data-clientenombre');
+  const nifCliente = e.target.getAttribute('data-clientenif');
+  const apellidosCliente = e.target.getAttribute('data-clienteapellidos');
   return (datos = {
-    nombre: 'nombre',
-    apellidos: 'apellidos',
-    nif: 'nif',
+    nombre: nombreCliente,
+    apellidos: apellidosCliente,
+    nif: nifCliente,
   });
 }
 
@@ -91,6 +115,8 @@ function obtenerClientes(datos) {
  * @returns codigo html con los datos del cliente
  */
 function crearHTMLCliente(cliente) {
+  const nifConGuion = cliente.nif.replace(/(\d{8})/, '$1-');
+  const telefonoConEspacios = cliente.telefono.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
   return `
           <tr>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -101,10 +127,10 @@ function crearHTMLCliente(cliente) {
           <p class="text-gray-700">${cliente.email}</p>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 leading-5 text-gray-700">
-          <p class="text-gray-600">${cliente.nif}</p>
+          <p class="text-gray-600">${nifConGuion}</p>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 leading-5 text-gray-700">
-          <p class="text-gray-600">${cliente.telefono}</p>
+          <p class="text-gray-600">${telefonoConEspacios}</p>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5">
           <a
