@@ -23,6 +23,16 @@ function listeners() {
 }
 
 /**
+ * Marca en rojo el primer elemento que tenga la clase border-red-600
+ */
+function marcarPrimerElementoEnRojo() {
+  const campo = document.querySelector('.border-red-600');
+  if (campo) {
+    campo.focus();
+  }
+}
+
+/**
  * Se comprueba que el boton clicado es el botón submit, después se comprueba que el formulario es correcto, si lo es se recogen los datos del formulario y se mandan a la función que manda los datos al servidor para que se introduzca al cliente, en caso de que el formulario no sea correcto  no se manda el formulario y se marcan el rojo los inputs que sean incorrectos.
  * @param {evento} e
  */
@@ -35,7 +45,7 @@ async function enviarFormulario(e) {
       if (tratarRespuestaServidor(respuesta)) window.location.href = 'nuevo-cliente.html';
     }
   }
-  document.querySelector('.border-red-600').focus();
+  marcarPrimerElementoEnRojo();
 }
 
 /**
@@ -46,10 +56,12 @@ function tratarRespuestaServidor(respuesta) {
   let valido = true;
   if (respuesta.resultado === 'no') {
     for (let index = 0; index < respuesta.camposError.length; index++) {
+      document.getElementById(respuesta.camposError[index]).classList.add('border-red-600');
       document.getElementById(`error-${respuesta.camposError[index]}`).innerHTML = respuesta.mensajesError[index];
     }
     valido = false;
   }
+  marcarPrimerElementoEnRojo();
   return valido;
 }
 
