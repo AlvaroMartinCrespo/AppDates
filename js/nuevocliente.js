@@ -32,8 +32,7 @@ async function enviarFormulario(e) {
     if (comprobarFormulario()) {
       const datosFormulario = recogerDatosFormulario();
       const respuesta = await Controlador.enviarCliente(datosFormulario);
-      tratarRespuestaServidor(respuesta);
-      window.location.href = 'nuevo-cliente.html';
+      if (tratarRespuestaServidor(respuesta)) window.location.href = 'nuevo-cliente.html';
     }
   }
 }
@@ -43,14 +42,14 @@ async function enviarFormulario(e) {
  * @param {JSON} respuesta
  */
 function tratarRespuestaServidor(respuesta) {
+  let valido = true;
   if (respuesta.resultado === 'no') {
-    console.log(respuesta);
-    console.log(respuesta.camposError);
-    console.log(respuesta.mensajesError);
     for (let index = 0; index < respuesta.camposError.length; index++) {
       document.getElementById(`error-${respuesta.camposError[index]}`).innerHTML = respuesta.mensajesError[index];
     }
+    valido = false;
   }
+  return valido;
 }
 
 /**

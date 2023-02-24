@@ -9,6 +9,39 @@ invalidarFormulario();
 function listeners() {
   document.getElementById('cancelar').addEventListener('click', redireccionarIndex, false);
   window.addEventListener('click', enviarFormulario, false);
+  const campos = document.querySelectorAll('.auto-validable');
+  for (let index = 0; index < campos.length; index++) {
+    campos[index].addEventListener('blur', comprobarError, false);
+    campos[index].addEventListener('invalid', notificarError, false);
+    campos[index].addEventListener('input', corregirError, false);
+  }
+}
+
+/**
+ * Por cada evento input que reciba el campo se comprueba si es válido.
+ * @param {evento} e
+ */
+function corregirError(e) {
+  if (e.target.checkValidity()) {
+    document.getElementById(`error-${e.target.name}`).innerHTML = '';
+  }
+}
+
+/**
+ * Si el campo no es válido se llamará a esta función y se insertará en el campo de error correspondiente al input el error.
+ * @param {evento} e
+ */
+function notificarError(e) {
+  document.getElementById(`error-${e.target.name}`).innerHTML = 'Este campo no puede estar vacío';
+}
+
+/**
+ * Comprobamos si el campo es válido
+ * @param {evento} e
+ * @returns boolean
+ */
+function comprobarError(e) {
+  return e.target.checkValidity();
 }
 
 /**
@@ -27,15 +60,11 @@ function redireccionarIndex() {
  */
 async function enviarFormulario(e) {
   if (e.target.type === 'submit') {
+    e.preventDefault();
     if (comprobarFormulario()) {
       const datos = recogerDatosFormulario();
-      // console.log(datos);
-      e.preventDefault();
       const respuesta = await Controlador.crearCitaCliente(datos);
-      tratarRespuesta(respuesta);
-    } else {
-      e.preventDefault();
-      //Blur en los errores para que se queden en rojo.
+      if (tratarRespuesta(respuesta)) window.location.href = 'nueva-cita.html';
     }
   }
 }
@@ -45,14 +74,31 @@ async function enviarFormulario(e) {
  * @returns boolean
  */
 function comprobarFormulario() {
-  return true;
+  let valido = true;
+  const inputs = document.querySelectorAll('.auto-validable');
+  for (let index = 0; index < inputs.length; index++) {
+    if (!inputs[index].checkValidity()) {
+      inputs[index].blur();
+      valido = false;
+    }
+  }
+  return valido;
 }
 
 /**
  * Se le pasa el json de la respuesta del servidor, si la respuesta es 'no' se tratan los errores.
  * @param {json respuesta} respuesta
  */
-function tratarRespuesta(respuesta) {}
+function tratarRespuesta(respuesta) {
+  let valido = true;
+  if (respuesta.resultado === 'no') {
+    for (let index = 0; index < respuesta.camposError.length; index++) {
+      document.getElementById(`error-${respuesta.camposError[index]}`).innerHTML = respuesta.mensajesError[index];
+    }
+    valido = false;
+  }
+  return valido;
+}
 
 /**
  * Obtenemos los datos del formulario lo convertirmos en un objeto y lo devolvemos.
