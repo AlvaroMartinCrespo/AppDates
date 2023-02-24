@@ -2,30 +2,24 @@ import { ControladorPHP as Controlador } from './controlador.js';
 
 listeners();
 invalidarFormulario();
+
+// console.log(document.getElementsByTagName('input'));
+
 /**
  * Listeners
  */
 function listeners() {
   document.getElementById('cancelar').addEventListener('click', redireccionar, false);
   window.addEventListener('click', enviarFormulario, false);
-  //Comprobar
-  document.getElementById('nombre').addEventListener('blur', comprobarNombre, false);
-  document.getElementById('apellidos').addEventListener('blur', comprobarApellidos, false);
-  document.getElementById('email').addEventListener('blur', comprobarEmail, false);
-  document.getElementById('telefono').addEventListener('blur', comprobarTelefono, false);
-  document.getElementById('nif').addEventListener('blur', comprobarNif, false);
-  //Notificar error
-  document.getElementById('nombre').addEventListener('invalid', notificarNombre, false);
-  document.getElementById('apellidos').addEventListener('invalid', notificarApellidos, false);
-  document.getElementById('email').addEventListener('invalid', notificarEmail, false);
-  document.getElementById('telefono').addEventListener('invalid', notificarTelefono, false);
-  document.getElementById('nif').addEventListener('invalid', notificarNif, false);
-  //Comprobar si se ha corregido
-  document.getElementById('nombre').addEventListener('input', correccionNombre, false);
-  document.getElementById('apellidos').addEventListener('input', correccionApellidos, false);
-  document.getElementById('email').addEventListener('input', correccionEmail, false);
-  document.getElementById('telefono').addEventListener('input', correccionTelefono, false);
-  document.getElementById('nif').addEventListener('input', correccionNif, false);
+  //Comprobar campos inputs
+  const inputs = document.getElementsByTagName('input');
+  for (let index = 0; index < inputs.length; index++) {
+    if (inputs[index].id !== 'cancelar' && inputs[index].value !== 'Agregar Cliente') {
+      inputs[index].addEventListener('blur', comprobarCampo, false);
+      inputs[index].addEventListener('invalid', mostrarErrorCampo, false);
+      inputs[index].addEventListener('input', correccionCampo, false);
+    }
+  }
 }
 
 /**
@@ -34,13 +28,12 @@ function listeners() {
  */
 async function enviarFormulario(e) {
   if (e.target.type === 'submit') {
+    e.preventDefault();
     if (comprobarFormulario()) {
       const datosFormulario = recogerDatosFormulario();
       const respuesta = await Controlador.enviarCliente(datosFormulario);
       tratarRespuestaServidor(respuesta);
-    } else {
-      e.preventDefault();
-      //Blur en los errores para que se queden en rojo.
+      window.location.href = 'nuevo-cliente.html';
     }
   }
 }
@@ -51,7 +44,12 @@ async function enviarFormulario(e) {
  */
 function tratarRespuestaServidor(respuesta) {
   if (respuesta.resultado === 'no') {
-    //Se devuelven los datos erroneos que nos ha devuelto el servidor.
+    console.log(respuesta);
+    console.log(respuesta.camposError);
+    console.log(respuesta.mensajesError);
+    for (let index = 0; index < respuesta.camposError.length; index++) {
+      document.getElementById(`error-${respuesta.camposError[index]}`).innerHTML = respuesta.mensajesError[index];
+    }
   }
 }
 
@@ -63,12 +61,14 @@ function recogerDatosFormulario() {
   let datos = {};
   const formulario = document.getElementById('formulario');
   const formularioDatos = new FormData(formulario);
+  const telefonoCliente = formularioDatos.get('telefono').replace(/\s+/g, '');
+  const nifCliente = formularioDatos.get('nif').replace('-', '');
   return (datos = {
     nombre: formularioDatos.get('nombre'),
     apellidos: formularioDatos.get('apellidos'),
     email: formularioDatos.get('email'),
-    telefono: formularioDatos.get('telefono'),
-    nif: formularioDatos.get('nif'),
+    telefono: telefonoCliente,
+    nif: nifCliente,
   });
 }
 
@@ -76,46 +76,69 @@ function recogerDatosFormulario() {
  * Comprueba si todos los inputs del formulario son correctos.
  * @returns boolean
  */
-function comprobarFormulario() {
-  //Se comprueban los inputs del formulario
-  return true;
+function comprobarFormulario(e) {
+  let valido = true;
+  const inputs = document.getElementsByTagName('input');
+  for (let index = 0; index < inputs.length; index++) {
+    if (inputs[index].id !== 'cancelar' && inputs[index].value !== 'Agregar Cliente') {
+      if (!inputs[index].checkValidity()) {
+        inputs[index].blur();
+        valido = false;
+      }
+    }
+  }
+  return valido;
 }
 
-//Comprobar corrección
+/**
+ * Comprueba con cada input si el campo es valido o no, en caso de que sea valido elimina el mensaje de error.
+ * @param {evento} e
+ */
+function correccionCampo(e) {
+  if (e.target.checkValidity()) {
+    document.getElementById(`error-${e.target.name}`).innerHTML = '';
+  }
+}
 
-function correccionApellidos() {}
+/**
+ * Si un campo es inválido, se llama a esta función donde se obtiene el tipo de error y lo imprime en pantalla en el campo de error correspondiente al elemento.
+ * @param {evento} e
+ */
+function mostrarErrorCampo(e) {
+  const mensajeError = mensajeTipoError(e);
 
-function correccionEmail() {}
+  if (e.target.id === 'email' || e.target.id === 'telefono' || e.target.id === 'nif') {
+    document.getElementById(`error-${e.target.name}`).innerHTML = e.target.title;
+  } else {
+    document.getElementById(`error-${e.target.name}`).innerHTML = mensajeError;
+  }
+}
 
-function correccionNif() {}
+/**
+ * Comprueba si el campo introducido es valido o no.
+ * @param {event} e
+ * @returns boolean
+ */
+function comprobarCampo(e) {
+  return e.target.checkValidity();
+}
 
-function correccionNombre() {}
-
-function correccionTelefono() {}
-
-//Notificar errores
-
-function notificarApellidos() {}
-
-function notificarEmail() {}
-
-function notificarNif() {}
-
-function notificarNombre() {}
-
-function notificarTelefono() {}
-
-//Comprobar errores
-
-function comprobarApellidos() {}
-
-function comprobarEmail() {}
-
-function comprobarNif() {}
-
-function comprobarTelefono() {}
-
-function comprobarNombre() {}
+/**
+ * Se le pasa el evento del elemento correspondiente y mediante el metodo validity obtenemos el error que tiene.
+ * @param {evento} e
+ * @returns string error
+ */
+function mensajeTipoError(e) {
+  let mensaje = '';
+  if (e.target.validity.valueMissing) {
+    mensaje = 'El campo no puede estar vacío.';
+  } else if (e.target.validity.tooLong) {
+    mensaje = 'Demasiado largo.';
+  } else if (e.target.validity.tooShort) {
+    mensaje = 'Demasiado corto.';
+  }
+  return mensaje;
+}
 
 /**
  * Redirecciona a la página principal donde se listan los clientes.
