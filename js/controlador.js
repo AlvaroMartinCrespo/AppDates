@@ -112,8 +112,8 @@ export class ControladorPHP {
           'content-type': 'application/json',
         },
         body: JSON.stringify({
-          metodo: 'getCitasCliente',
-          nifCliente: cita,
+          metodo: 'setCita',
+          cita: cita,
         }),
       });
       respuestaJSON = await respuesta.json();
@@ -189,6 +189,31 @@ export class ControladorPHP {
         body: JSON.stringify({
           metodo: 'getCitasCliente',
           nifCliente: nifCliente,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
+
+  /**
+   * Se le pasa los datos de una cita en formato JSON y se manda junto con el método setCita al servidor que posteriormente no devolvera un JSON de respuesta.
+   * @param {citaJson} cita
+   * @returns respuesta del servidor
+   */
+  static async crearCitaCliente(cita) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'setCita',
+          cita: cita,
         }),
       });
       respuestaJSON = await respuesta.json();

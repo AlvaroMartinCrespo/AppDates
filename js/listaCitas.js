@@ -9,7 +9,14 @@ function listerners() {
   window.addEventListener('load', tratarDatos, false);
   document.getElementById('volverClientes').addEventListener('click', redireccionarIndex, false);
   window.addEventListener('click', eliminarCita, false);
-  // document.querySelector('.eliminar').addEventListener('click', eliminarCita, false);
+  document.getElementById('crearCita').addEventListener('click', redireccionarCrearCita, false);
+}
+
+/**
+ * Redirecciona a la ventana de crear citas.
+ */
+function redireccionarCrearCita() {
+  window.location.href = 'nueva-cita.html';
 }
 
 /**

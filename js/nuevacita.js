@@ -29,13 +29,23 @@ async function enviarFormulario(e) {
   if (e.target.type === 'submit') {
     if (comprobarFormulario()) {
       const datos = recogerDatosFormulario();
-      const respuesta = Controlador.enviarCitas(datos);
+      // console.log(datos);
+      e.preventDefault();
+      const respuesta = await Controlador.crearCitaCliente(datos);
       tratarRespuesta(respuesta);
     } else {
       e.preventDefault();
       //Blur en los errores para que se queden en rojo.
     }
   }
+}
+
+/**
+ * Comprueba que todos los campos del formulario son correctos.
+ * @returns boolean
+ */
+function comprobarFormulario() {
+  return true;
 }
 
 /**
@@ -54,11 +64,11 @@ function recogerDatosFormulario() {
   const formulario = document.getElementById('formulario');
   const formularioDatos = new FormData(formulario);
   return (datos = {
-    nif: nifCliente,
-    nombre: formularioDatos.get('fecha'),
-    apellidos: formularioDatos.get('hora'),
-    email: formularioDatos.get('descripcion'),
-    telefono: formularioDatos.get('detalles'),
+    nifCliente: nifCliente,
+    fecha: formularioDatos.get('fecha'),
+    hora: formularioDatos.get('hora'),
+    descripcion: formularioDatos.get('descripcion'),
+    detalles: formularioDatos.get('detalles'),
   });
 }
 
