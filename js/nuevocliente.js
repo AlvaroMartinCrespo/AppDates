@@ -35,6 +35,7 @@ async function enviarFormulario(e) {
       if (tratarRespuestaServidor(respuesta)) window.location.href = 'nuevo-cliente.html';
     }
   }
+  document.querySelector('.border-red-600').focus();
 }
 
 /**
@@ -96,6 +97,7 @@ function comprobarFormulario(e) {
 function correccionCampo(e) {
   if (e.target.checkValidity()) {
     document.getElementById(`error-${e.target.name}`).innerHTML = '';
+    e.target.classList.remove('border-red-600');
   }
 }
 
@@ -108,8 +110,10 @@ function mostrarErrorCampo(e) {
 
   if (e.target.id === 'email' || e.target.id === 'telefono' || e.target.id === 'nif') {
     document.getElementById(`error-${e.target.name}`).innerHTML = e.target.title;
+    e.target.classList.add('border-red-600');
   } else {
     document.getElementById(`error-${e.target.name}`).innerHTML = mensajeError;
+    e.target.classList.add('border-red-600');
   }
 }
 

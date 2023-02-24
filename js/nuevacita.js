@@ -24,6 +24,7 @@ function listeners() {
 function corregirError(e) {
   if (e.target.checkValidity()) {
     document.getElementById(`error-${e.target.name}`).innerHTML = '';
+    e.target.classList.remove('border-red-600');
   }
 }
 
@@ -33,6 +34,7 @@ function corregirError(e) {
  */
 function notificarError(e) {
   document.getElementById(`error-${e.target.name}`).innerHTML = 'Este campo no puede estar vacío';
+  e.target.classList.add('border-red-600');
 }
 
 /**
@@ -82,6 +84,7 @@ function comprobarFormulario() {
       valido = false;
     }
   }
+  document.querySelector('.border-red-600').focus();
   return valido;
 }
 
