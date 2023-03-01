@@ -2,6 +2,7 @@ import { ControladorPHP as Controlador } from './controlador.js';
 
 listeners();
 invalidarFormulario();
+enfocarPrimerElementoFormulario();
 // marcarPrimerElementoEnRojo();
 
 /**
@@ -16,6 +17,14 @@ function listeners() {
     campos[index].addEventListener('invalid', notificarError, false);
     campos[index].addEventListener('input', corregirError, false);
   }
+}
+
+/**
+ * Enfoca el primer elemento del formulario.
+ */
+function enfocarPrimerElementoFormulario() {
+  const inputs = document.getElementsByTagName('input');
+  inputs[0].focus();
 }
 
 /**
