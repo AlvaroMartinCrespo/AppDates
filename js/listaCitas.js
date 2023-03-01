@@ -12,6 +12,10 @@ function listerners() {
   document.getElementById('crearCita').addEventListener('click', redireccionarCrearCita, false);
 }
 
+function redireccionarEditarCita() {
+  window.location.href = 'editar-cita.html';
+}
+
 /**
  * Redirecciona a la ventana de crear citas.
  */
@@ -49,7 +53,6 @@ async function eliminarCita(e) {
   for (let index = 0; index < e.target.classList.length; index++) {
     if (e.target.classList[index] === 'eliminar') {
       const idCita = e.target.getAttribute('data-citaid');
-      console.log(idCita);
       const nifCliente = e.target.getAttribute('data-nifcliente');
       const datosCita = await Controlador.citaClienteId(nifCliente);
 
@@ -115,6 +118,15 @@ function crearHTMLCitasClientes(datos) {
                 data-citafecha="${datos.fecha}"
                 data-citahora="${datos.hota}"
                 >Eliminar cita</a
+              >
+              <a
+                href="#"
+                class="block text-red-600 hover:text-red-900 editar"
+                data-citaid="${datos.id}"
+                data-nifcliente="${datos.nifCliente}"
+                data-citafecha="${datos.fecha}"
+                data-citahora="${datos.hota}"
+                >Editar cita</a
               >
             </td>
           </tr>

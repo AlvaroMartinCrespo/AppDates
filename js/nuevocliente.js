@@ -2,6 +2,7 @@ import { ControladorPHP as Controlador } from './controlador.js';
 
 listeners();
 invalidarFormulario();
+enfocarPrimerElementoFormulario();
 
 /**
  * Listeners
@@ -11,7 +12,7 @@ function listeners() {
   window.addEventListener('click', enviarFormulario, false);
   //Comprobar campos inputs
   const inputs = document.getElementsByTagName('input');
-  
+
   for (let index = 0; index < inputs.length; index++) {
     if (inputs[index].id !== 'cancelar' && inputs[index].value !== 'Agregar Cliente') {
       inputs[index].addEventListener('blur', comprobarCampo, false);
@@ -19,6 +20,11 @@ function listeners() {
       inputs[index].addEventListener('input', correccionCampo, false);
     }
   }
+}
+
+function enfocarPrimerElementoFormulario() {
+  const inputs = document.getElementsByTagName('input');
+  inputs[0].focus();
 }
 
 /**
