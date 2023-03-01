@@ -3,8 +3,6 @@ import { ControladorPHP as Controlador } from './controlador.js';
 listeners();
 invalidarFormulario();
 
-// console.log(document.getElementsByTagName('input'));
-
 /**
  * Listeners
  */
