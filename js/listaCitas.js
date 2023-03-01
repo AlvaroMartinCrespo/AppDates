@@ -88,11 +88,12 @@ function citas(respuesta) {
  * @returns plantilla HTML con los datos de la cita.
  */
 function crearHTMLCitasClientes(datos) {
+  const fechaCorrectaFormato = datos.fecha.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3-$2-$1');
   return `
   
             <tr>
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-              <p class="text-gray-700">${datos.fecha}</p>
+              <p class="text-gray-700">${fechaCorrectaFormato}</p>
             </td>
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
               <p class="text-gray-700">${datos.hora}</p>

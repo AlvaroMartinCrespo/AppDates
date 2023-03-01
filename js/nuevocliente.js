@@ -11,6 +11,7 @@ function listeners() {
   window.addEventListener('click', enviarFormulario, false);
   //Comprobar campos inputs
   const inputs = document.getElementsByTagName('input');
+  
   for (let index = 0; index < inputs.length; index++) {
     if (inputs[index].id !== 'cancelar' && inputs[index].value !== 'Agregar Cliente') {
       inputs[index].addEventListener('blur', comprobarCampo, false);
