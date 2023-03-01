@@ -49,14 +49,21 @@ async function eliminarCita(e) {
   for (let index = 0; index < e.target.classList.length; index++) {
     if (e.target.classList[index] === 'eliminar') {
       const idCita = e.target.getAttribute('data-citaid');
+      console.log(idCita);
       const nifCliente = e.target.getAttribute('data-nifcliente');
       const datosCita = await Controlador.citaClienteId(nifCliente);
-      console.log(datosCita);
-      if (
-        window.confirm(`Seguro que desea eliminar la cita del ${console.log('fecha')} a las ${console.log('horaCita')}`)
-      ) {
-        const respuesta = await Controlador.eliminarCita(idCita);
-        window.location.href = './lista-citas.html';
+
+      for (let index = 0; index < datosCita.datos.length; index++) {
+        if (datosCita.datos[index].id === idCita) {
+          if (
+            window.confirm(
+              `Seguro que desea eliminar la cita del ${datosCita.datos[index].fecha} a las ${datosCita.datos[index].hora}`
+            )
+          ) {
+            const respuesta = await Controlador.eliminarCita(idCita);
+            window.location.href = './lista-citas.html';
+          }
+        }
       }
     }
   }
