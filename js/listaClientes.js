@@ -25,8 +25,23 @@ async function redireccionar(e) {
       verCitas(e);
     } else if (e.target.classList[index] === 'eliminar') {
       await eliminarCliente(e);
+    } else if (e.target.classList[index] === 'editar') {
+      editarCliente(e);
     }
   }
+}
+
+/**
+ * Se limpia el localStorage, se añade el nombre y los apellidos del cliente a editar
+ * @param {evento} e
+ */
+function editarCliente(e) {
+  localStorage.clear();
+  const { nombre, apellidos, nif } = obtenerDatosClientes(e);
+  localStorage.setItem('nombre', nombre);
+  localStorage.setItem('apellidos', apellidos);
+  localStorage.setItem('nif', nif);
+  window.location.href = './editar-cliente.html';
 }
 
 /**
@@ -158,6 +173,14 @@ function crearHTMLCliente(cliente) {
             data-clienteapellidos="${cliente.apellidos}"
             data-clientenif="${cliente.nif}"
             >Eliminar cliente</a
+          >
+          <a
+            href="#"
+            class="block text-red-600 hover:text-red-900 editar"
+            data-clientenombre="${cliente.nombre}"
+            data-clienteapellidos="${cliente.apellidos}"
+            data-clientenif="${cliente.nif}"
+            >Editar Cliente</a
           >
         </td>
       
