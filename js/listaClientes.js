@@ -98,7 +98,7 @@ async function cargarClientes() {
 }
 
 /**
- * Obtiene los datos de los clientes de la función cargarClientes y dentro del bucle llama a la función insertarHTMLCliente con los datos de cada cliente para que se inserten en pantalla.
+ * Obtiene los datos de los clientes de la función cargarClientes y dentro del bucle se crea la fila y se añade al elemento padre, a continuación se añade la información de las citas en la fila.
  * @param {*} datos
  */
 function obtenerClientes(datos) {
@@ -163,12 +163,4 @@ function crearHTMLCliente(cliente) {
       
     
     `;
-}
-
-/**
- * Inserta los datos de los clientes en la tabla.
- * @param {datos} cliente
- */
-function insertarHTMLCliente(cliente) {
-  const elemento = (document.getElementById('listado-clientes').innerHTML += cliente);
 }

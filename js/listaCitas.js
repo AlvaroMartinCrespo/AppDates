@@ -63,22 +63,16 @@ async function eliminarCita(e) {
 }
 
 /**
- * Obtiene la respuesta del servidor, llama a la funcion para crear la plantilla con la respuesta y luego llama a la función para insertar la plantilla en el HTML.
+ * Obtiene la respuesta del servidor, llama a la funcion para crear la plantilla con la respuesta y luego se crea la fila y se añade al elemento padre, después se añade la información a la fila.
  * @param {json} respuesta
  */
 function citas(respuesta) {
+  const elementoPadre = document.getElementById('listado-citas');
   for (let index = 0; index < respuesta.length; index++) {
-    const html = crearHTMLCitasClientes(respuesta[index]);
-    insertarCitasHTML(html);
+    const fila = document.createElement('tr');
+    elementoPadre.appendChild(fila);
+    fila.innerHTML = crearHTMLCitasClientes(respuesta[index]);
   }
-}
-
-/**
- * Obtiene la plantilla HTML de la cita con los datos y lo introduce en el elemento correspondiente.
- * @param {string} cita
- */
-function insertarCitasHTML(cita) {
-  document.getElementById('listado-citas').innerHTML += cita;
 }
 
 /**
