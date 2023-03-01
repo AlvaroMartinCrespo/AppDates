@@ -2,6 +2,7 @@ import { ControladorPHP as Controlador } from './controlador.js';
 
 listeners();
 invalidarFormulario();
+// marcarPrimerElementoEnRojo();
 
 /**
  * Creamos los listeners para el correcto funcionamiento de la página.
@@ -24,6 +25,7 @@ function listeners() {
 function corregirError(e) {
   if (e.target.checkValidity()) {
     document.getElementById(`error-${e.target.name}`).innerHTML = '';
+    e.target.classList.remove('border-red-600');
   }
 }
 
@@ -33,6 +35,7 @@ function corregirError(e) {
  */
 function notificarError(e) {
   document.getElementById(`error-${e.target.name}`).innerHTML = 'Este campo no puede estar vacío';
+  e.target.classList.add('border-red-600');
 }
 
 /**
@@ -67,6 +70,18 @@ async function enviarFormulario(e) {
       if (tratarRespuesta(respuesta)) window.location.href = 'nueva-cita.html';
     }
   }
+
+  marcarPrimerElementoEnRojo();
+}
+
+/**
+ * Marca en rojo el primer elemento que tenga la clase border-red-600
+ */
+function marcarPrimerElementoEnRojo() {
+  const campo = document.querySelector('.border-red-600');
+  if (campo) {
+    campo.focus();
+  }
 }
 
 /**
@@ -82,6 +97,7 @@ function comprobarFormulario() {
       valido = false;
     }
   }
+  // document.querySelector('.border-red-600').focus();
   return valido;
 }
 
@@ -91,10 +107,13 @@ function comprobarFormulario() {
  */
 function tratarRespuesta(respuesta) {
   let valido = true;
+  console.log(respuesta);
   if (respuesta.resultado === 'no') {
     for (let index = 0; index < respuesta.camposError.length; index++) {
+      document.getElementById(respuesta.camposError[index]).classList.add('border-red-600');
       document.getElementById(`error-${respuesta.camposError[index]}`).innerHTML = respuesta.mensajesError[index];
     }
+    marcarPrimerElementoEnRojo();
     valido = false;
   }
   return valido;

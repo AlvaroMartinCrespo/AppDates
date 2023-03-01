@@ -103,9 +103,11 @@ async function cargarClientes() {
  */
 function obtenerClientes(datos) {
   const clientes = datos.datos;
+  const elementoPadre = document.getElementById('listado-clientes');
   for (let index = 0; index < clientes.length; index++) {
-    const clienteDatos = crearHTMLCliente(clientes[index]);
-    insertarHTMLCliente(clienteDatos);
+    const fila = document.createElement('tr');
+    elementoPadre.appendChild(fila);
+    fila.innerHTML = crearHTMLCliente(clientes[index]);
   }
 }
 
@@ -118,7 +120,7 @@ function crearHTMLCliente(cliente) {
   const nifConGuion = cliente.nif.replace(/(\d{8})/, '$1-');
   const telefonoConEspacios = cliente.telefono.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
   return `
-          <tr>
+          
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <p class="text-sm leading-5 font-medium text-gray-700 text-lg font-bold">${cliente.nombre}</p>
           <p class="text-sm leading-10 text-gray-700">${cliente.apellidos}</p>
@@ -158,7 +160,7 @@ function crearHTMLCliente(cliente) {
             >Eliminar cliente</a
           >
         </td>
-      </tr>
+      
     
     `;
 }
