@@ -128,5 +128,5 @@ function crearHTMLCitasClientes(datos) {
  */
 function nombreApellidosClientes(datos) {
   const { nombre, apellidos } = datos;
-  document.getElementById('cita-cliente').innerHTML = `${(nombre, apellidos)}`;
+  document.getElementById('cita-cliente').innerHTML = `${nombre} ${apellidos}`;
 }
