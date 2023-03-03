@@ -12,10 +12,6 @@ function listerners() {
   document.getElementById('crearCita').addEventListener('click', redireccionarCrearCita, false);
 }
 
-function redireccionarEditarCita() {
-  window.location.href = 'editar-cita.html';
-}
-
 /**
  * Redirecciona a la ventana de crear citas.
  */
@@ -119,15 +115,7 @@ function crearHTMLCitasClientes(datos) {
                 data-citahora="${datos.hota}"
                 >Eliminar cita</a
               >
-              <a
-                href="#"
-                class="block text-red-600 hover:text-red-900 editar"
-                data-citaid="${datos.id}"
-                data-nifcliente="${datos.nifCliente}"
-                data-citafecha="${datos.fecha}"
-                data-citahora="${datos.hota}"
-                >Editar cita</a
-              >
+
             </td>
           </tr>
   
