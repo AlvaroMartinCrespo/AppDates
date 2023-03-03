@@ -11,12 +11,26 @@ enfocarPrimerElementoFormulario();
 function listeners() {
   document.getElementById('cancelar').addEventListener('click', redireccionarIndex, false);
   window.addEventListener('click', enviarFormulario, false);
+  window.addEventListener('load', cargarInformacion, false);
   const campos = document.querySelectorAll('.auto-validable');
   for (let index = 0; index < campos.length; index++) {
     campos[index].addEventListener('blur', comprobarError, false);
     campos[index].addEventListener('invalid', notificarError, false);
     campos[index].addEventListener('input', corregirError, false);
   }
+}
+
+async function cargarInformacion() {
+  const fecha = localStorage.getItem('fecha');
+  const hora = localStorage.getItem('hora');
+  const id = localStorage.getItem('idCita');
+  const datos = await Controlador.getCita(id);
+  const descripcion = datos.datos[0].descripcion;
+  const detalles = datos.datos[0].detalles;
+  document.getElementById('hora').value = hora;
+  document.getElementById('fecha').value = fecha;
+  document.getElementById('descripcion').value = descripcion;
+  document.getElementById('detalles').value = detalles;
 }
 
 /**
@@ -75,8 +89,8 @@ async function enviarFormulario(e) {
     e.preventDefault();
     if (comprobarFormulario()) {
       const datos = recogerDatosFormulario();
-      const respuesta = await Controlador.crearCitaCliente(datos);
-      if (tratarRespuesta(respuesta)) window.location.href = 'nueva-cita.html';
+      const respuesta = await Controlador.actualizarCita(datos);
+      if (tratarRespuesta(respuesta)) window.location.href = 'lista-citas.html';
     }
     marcarPrimerElementoEnRojo();
   }
@@ -135,9 +149,11 @@ function recogerDatosFormulario() {
   let datos = {};
   const nifCliente = localStorage.getItem('nifCliente');
   const formulario = document.getElementById('formulario');
+  const idCita = localStorage.getItem('idCita');
   const formularioDatos = new FormData(formulario);
   return (datos = {
     nifCliente: nifCliente,
+    idCita: idCita,
     fecha: formularioDatos.get('fecha'),
     hora: formularioDatos.get('hora'),
     descripcion: formularioDatos.get('descripcion'),

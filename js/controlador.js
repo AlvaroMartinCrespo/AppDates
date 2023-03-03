@@ -222,4 +222,64 @@ export class ControladorPHP {
     }
     return respuestaJSON;
   }
+
+  static async actualizarCliente(cliente) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'actualizarCliente',
+          cliente: cliente,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
+
+  static async actualizarCita(cita) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'actualizarCita',
+          cita: cita,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
+
+  static async getCita(id) {
+    let respuestaJSON = null;
+    try {
+      const respuesta = await fetch(`citasClientes.php`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metodo: 'getCita',
+          id: id,
+        }),
+      });
+      respuestaJSON = await respuesta.json();
+    } catch (error) {
+      console.error(error.message);
+    }
+    return respuestaJSON;
+  }
 }

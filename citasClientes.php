@@ -46,7 +46,6 @@ try {
         VALUES (1, '33489123F', '2023-08-16', '20:30', 'Necesita sistema de gestión para sus talleres de vehículos', 'El sistema puede complicarse debido a que se trata de una empresa con 30 talleres'),
                (2, '33489123F', '2023-03-31', '10:00', 'Recuperación de datos de discos duros', 'Tiene 6 equipos que no arrancan y necesita recuperar los datos de los discos duros');";
         $conn->query($sqlquery);
-
     } else {
         $sqlquery = "USE " . $nombreBD . ";";
         $conn->query($sqlquery);
@@ -131,6 +130,82 @@ if ($metodo === "getClientes") {
     // Este método tiene fines de depuración. Obtiene todas las citas del sistema,
     // no importa el cliente al que pertenezcan
     getCitas($conn);
+} else if ($metodo === 'actualizarCliente') {
+    $clienteJSON = $datos->cliente;
+    actualizarCliente($conn, $clienteJSON);
+} else if ($metodo === 'actualizarCita') {
+    $citaJSON = $datos->cita;
+    actualizarCita($conn, $citaJSON);
+} else if ($metodo === 'getCita') {
+    $idCita = $datos->id;
+    getCita($conn, $idCita);
+}
+
+function getCita($conn, $id)
+{
+    $sqlquery = "SELECT * FROM Cita WHERE id='$id';";
+    $citas = $conn->query($sqlquery);
+    $devolver = (object) [
+        "resultado" => "ok",
+        "camposError" => [""],
+        "mensajesError" => [""],
+        "datos" => obtenerArrayDeConsultaCitas($citas)
+    ];
+    echo json_encode($devolver);
+}
+
+function actualizarCita($conn, $citaJSON)
+{
+    $sqlquery = "SELECT * FROM Cita WHERE Cita.nifCliente='$citaJSON->nifCliente' AND
+                Cita.fecha='$citaJSON->fecha' AND
+                Cita.hora='$citaJSON->hora'";
+    $citasFechaHora = $conn->query($sqlquery);
+    $arrayCitasFechaHora = obtenerArrayDeConsultaCitas($citasFechaHora);
+
+    $devolver = (object) [
+        "resultado" => "ok",
+        "camposError" => array(),
+        "mensajesError" => array(),
+        "datos" => $citaJSON
+    ];
+
+    if (count($arrayCitasFechaHora) > 0) {
+        $devolver->resultado = "no";
+        array_push($devolver->camposError, "fecha", "hora");
+        array_push($devolver->mensajesError, "Debes cambiar la fecha o la hora", "Debes cambiar la fecha o la hora");
+    } else {
+        $sqlquery = "UPDATE Cita SET fecha='$citaJSON->fecha', hora='$citaJSON->hora', descripcion='$citaJSON->descripcion', detalles='$citaJSON->detalles' WHERE nifCliente='$citaJSON->nifCliente' AND id='$citaJSON->idCita'";
+        // echo "<br>".$sqlquery."<br>";
+        $conn->query($sqlquery);
+    }
+
+    echo json_encode($devolver);
+}
+
+function actualizarCliente($conn, $clienteJSON)
+{
+    $sqlquery = "SELECT * FROM Cliente WHERE Cliente.nif='$clienteJSON->nif'";
+    $clientesNIF = $conn->query($sqlquery);
+    $arrayClientesNIF = obtenerArrayDeConsultaClientes($clientesNIF);
+    $devolver = (object) [
+        "resultado" => "ok",
+        "camposError" => array(),
+        "mensajesError" => array(),
+        "datos" => $clienteJSON
+    ];
+
+    if (count($arrayClientesNIF) === 1) {
+        $sqlquery = "UPDATE Cliente 
+                 SET nombre='$clienteJSON->nombre', apellidos='$clienteJSON->apellidos', email='$clienteJSON->email', telefono='$clienteJSON->telefono' 
+                 WHERE nif='$clienteJSON->nif';";
+        $conn->query($sqlquery);
+    } else {
+        $devolver->resultado = "no";
+        array_push($devolver->camposError, "nif");
+        array_push($devolver->mensajesError, "El NIF $clienteJSON->nif no se encuentra en el sistema");
+    }
+
+    echo json_encode($devolver);
 }
 
 function setCita($conn, $citaJSON)
@@ -181,7 +256,6 @@ function setCliente($conn, $clienteJSON)
                VALUES ('$clienteJSON->nombre', '$clienteJSON->apellidos', '$clienteJSON->email', '$clienteJSON->telefono', '$clienteJSON->nif');";
         // echo "<br>".$sqlquery."<br>";
         $conn->query($sqlquery);
-
     } else {
         if (count($arrayClientesNIF) > 0) {
             $devolver->resultado = "no";
@@ -238,7 +312,6 @@ function eliminarCliente($conn, $nif)
             "mensajesError" => ["El cliente no se ha podido eliminar porque no existe"],
             "datos" => $clienteEliminar
         ];
-
     }
     echo json_encode($devolver);
 }
@@ -327,5 +400,3 @@ function eliminarBD($conn, $nombreBD)
     ];
     echo json_encode($devolver);
 }
-
-?>

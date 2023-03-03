@@ -49,8 +49,8 @@ async function enviarFormulario(e) {
       const respuesta = await Controlador.enviarCliente(datosFormulario);
       if (tratarRespuestaServidor(respuesta)) window.location.href = 'nuevo-cliente.html';
     }
+    marcarPrimerElementoEnRojo();
   }
-  marcarPrimerElementoEnRojo();
 }
 
 /**

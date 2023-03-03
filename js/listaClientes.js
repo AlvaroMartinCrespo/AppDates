@@ -37,10 +37,12 @@ async function redireccionar(e) {
  */
 function editarCliente(e) {
   localStorage.clear();
-  const { nombre, apellidos, nif } = obtenerDatosClientes(e);
+  const { nombre, apellidos, nif, email, telefono } = obtenerDatosClientes(e);
   localStorage.setItem('nombre', nombre);
   localStorage.setItem('apellidos', apellidos);
   localStorage.setItem('nif', nif);
+  localStorage.setItem('email', email);
+  localStorage.setItem('telefono', telefono);
   window.location.href = './editar-cliente.html';
 }
 
@@ -90,10 +92,14 @@ function obtenerDatosClientes(e) {
   const nombreCliente = e.target.getAttribute('data-clientenombre');
   const nifCliente = e.target.getAttribute('data-clientenif');
   const apellidosCliente = e.target.getAttribute('data-clienteapellidos');
+  const telefonoCliente = e.target.getAttribute('data-clientetelefono');
+  const emailCliente = e.target.getAttribute('data-clienteemail');
   return (datos = {
     nombre: nombreCliente,
     apellidos: apellidosCliente,
     nif: nifCliente,
+    email: emailCliente,
+    telefono: telefonoCliente,
   });
 }
 
@@ -156,6 +162,8 @@ function crearHTMLCliente(cliente) {
             data-clientenombre="${cliente.nombre}"
             data-clienteapellidos="${cliente.apellidos}"
             data-clientenif="${cliente.nif}"
+            data-clientetelefono="${cliente.telefono}"
+            data-clienteemail="${cliente.email}"
             >Crear cita</a
           >
           <a
@@ -164,6 +172,8 @@ function crearHTMLCliente(cliente) {
             data-clientenombre="${cliente.nombre}"
             data-clienteapellidos="${cliente.apellidos}"
             data-clientenif="${cliente.nif}"
+            data-clientetelefono="${cliente.telefono}"
+            data-clienteemail="${cliente.email}"
             >Ver citas</a
           >
           <a
@@ -172,6 +182,8 @@ function crearHTMLCliente(cliente) {
             data-clientenombre="${cliente.nombre}"
             data-clienteapellidos="${cliente.apellidos}"
             data-clientenif="${cliente.nif}"
+            data-clientetelefono="${cliente.telefono}"
+            data-clienteemail="${cliente.email}"
             >Eliminar cliente</a
           >
           <a
@@ -180,6 +192,8 @@ function crearHTMLCliente(cliente) {
             data-clientenombre="${cliente.nombre}"
             data-clienteapellidos="${cliente.apellidos}"
             data-clientenif="${cliente.nif}"
+            data-clientetelefono="${cliente.telefono}"
+            data-clienteemail="${cliente.email}"
             >Editar Cliente</a
           >
         </td>

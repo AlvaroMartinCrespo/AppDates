@@ -4,7 +4,7 @@ listeners();
 enfocarPrimerElementoFormulario();
 
 function listeners() {
-  window.addEventListener('load', cargarNombre, false);
+  window.addEventListener('load', cargarInformacion, false);
   window.addEventListener('click', redireccionarAListaClientes, false);
   window.addEventListener('click', enviarFormulario, false);
 
@@ -27,13 +27,35 @@ function enfocarPrimerElementoFormulario() {
   inputs[0].focus();
 }
 
+function datos() {
+  return (datos = {
+    nombre: localStorage.getItem('nombre'),
+    apellidos: localStorage.getItem('apellidos'),
+    email: localStorage.getItem('email'),
+    telefono: localStorage.getItem('telefono'),
+    nif: localStorage.getItem('nif'),
+  });
+}
+
 /**
  * Carga el nombre y apellido del usuario para mostrarlo en pantalla.
  */
-function cargarNombre() {
-  const nombre = localStorage.getItem('nombre');
-  const apellidos = localStorage.getItem('apellidos');
+function cargarInformacion() {
+  const { nombre, apellidos, email, telefono, nif } = datos();
   document.getElementById('nombreCliente').innerHTML = `${nombre} ${apellidos}`;
+  document.getElementById('nombre').value = nombre;
+  document.getElementById('apellidos').value = apellidos;
+  document.getElementById('email').value = email;
+  document.getElementById('telefono').value = telefono;
+  añadirNifDesactivado(nif);
+  document.getElementById('formulario').appendChild();
+}
+
+function añadirNifDesactivado(nif) {
+  const formulario = document.getElementById('formulario');
+  const html = `<div class="mb-4"> <label class="block text-gray-700 text-sm font-bold mb-2" for="nif">Nif</label><input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline value=${nif} auto-validable" id="hora" name="hora" type="time" required/> </div>`;
+  console.log(formulario);
+  formulario.appendChild(html);
 }
 
 /**
@@ -55,7 +77,7 @@ async function enviarFormulario(e) {
     e.preventDefault();
     if (comprobarFormulario()) {
       const datosFormulario = recogerDatosFormulario();
-      await Controlador.enviarCliente(datosFormulario); //Usar la función del controlador de editar cliente.
+      await Controlador.actualizarCliente(datosFormulario); //Usar la función del controlador de editar cliente.
       window.location.href = 'nuevo-cliente.html';
     }
     marcarPrimerElementoEnRojo();
@@ -72,6 +94,7 @@ function recogerDatosFormulario() {
   const formularioDatos = new FormData(formulario);
   const telefonoCliente = formularioDatos.get('telefono').replace(/\s+/g, '');
   return (datos = {
+    nif: localStorage.getItem('nif'),
     nombre: formularioDatos.get('nombre'),
     apellidos: formularioDatos.get('apellidos'),
     email: formularioDatos.get('email'),

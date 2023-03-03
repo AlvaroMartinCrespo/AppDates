@@ -10,7 +10,10 @@ function listerners() {
   document.getElementById('volverClientes').addEventListener('click', redireccionarIndex, false);
   window.addEventListener('click', eliminarCita, false);
   document.getElementById('crearCita').addEventListener('click', redireccionarCrearCita, false);
+  window.addEventListener('click', redireccionarEditarCita, false);
 }
+
+function redireccionarEditarCita() {}
 
 /**
  * Redirecciona a la ventana de crear citas.
@@ -43,6 +46,7 @@ async function tratarDatos() {
 }
 /**
  * Comprobamos que el botón pulsado es el botón de eliminar cita, obtenemos el id de la cita del elemento y se lo pasamos a la función del controlador de eliminar la cita, nos devolerá una respuesta.
+ * También redirecciona a editar cita.
  * @param {evento} e
  */
 async function eliminarCita(e) {
@@ -64,6 +68,17 @@ async function eliminarCita(e) {
           }
         }
       }
+    } else if (e.target.classList[index] === 'editar') {
+      localStorage.clear();
+      const idCita = e.target.getAttribute('data-citaid');
+      const nifCliente = e.target.getAttribute('data-nifcliente');
+      const fecha = e.target.getAttribute('data-citafecha');
+      const hora = e.target.getAttribute('data-citahora');
+      localStorage.setItem('idCita', idCita);
+      localStorage.setItem('nifCliente', nifCliente);
+      localStorage.setItem('hora', hora);
+      localStorage.setItem('fecha', fecha);
+      window.location.href = 'editar-cita.html';
     }
   }
 }
@@ -112,8 +127,17 @@ function crearHTMLCitasClientes(datos) {
                 data-citaid="${datos.id}"
                 data-nifcliente="${datos.nifCliente}"
                 data-citafecha="${datos.fecha}"
-                data-citahora="${datos.hota}"
+                data-citahora="${datos.hora}"
                 >Eliminar cita</a
+              >
+              <a
+                href="#" 
+                class="block text-red-600 hover:text-red-900 editar"
+                data-citaid="${datos.id}"
+                data-nifcliente="${datos.nifCliente}"
+                data-citafecha="${datos.fecha}"
+                data-citahora="${datos.hora}"
+                >Editar cita</a
               >
 
             </td>
