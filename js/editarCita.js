@@ -24,6 +24,7 @@ function listeners() {
  * @returns objeto datos cita
  */
 function obtenerInformacionCita() {
+  let datos = {};
   return (datos = {
     fecha: localStorage.getItem('fecha'),
     hora: localStorage.getItem('hora'),
