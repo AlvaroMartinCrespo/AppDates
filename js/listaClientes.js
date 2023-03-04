@@ -43,6 +43,7 @@ function editarCliente(e) {
   localStorage.setItem('nif', nif);
   localStorage.setItem('email', email);
   localStorage.setItem('telefono', telefono);
+  console.log(localStorage);
   window.location.href = './editar-cliente.html';
 }
 

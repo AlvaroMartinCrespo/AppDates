@@ -56,11 +56,11 @@ function cargarInformacion() {
  * @param {string} nif
  */
 function añadirNifDesactivado(nif) {
-  const formulario = document.getElementById('formulario');
+  const telefonoInput = document.getElementById('telefono').parentElement;
   const divForm = document.createElement('div');
   divForm.classList.add('mb-4');
-  formulario.appendChild(divForm);
-  divForm.innerHTML = `<label class="block text-gray-700 text-sm font-bold mb-2" for="nif">Nif</label><input value="${nif}" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline auto-validable" id="nif" name="nif" type="text" required/>`;
+  divForm.innerHTML = `<label class="block text-gray-700 text-sm font-bold mb-2" for="nif">Nif</label><input value="${nif}" class="bg-gray-300 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline auto-validable" id="nif" name="nif" type="text" required/>`;
+  telefonoInput.insertAdjacentElement('afterend', divForm);
   document.getElementById('nif').setAttribute('disabled', '');
 }
 
