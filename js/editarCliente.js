@@ -48,14 +48,20 @@ function cargarInformacion() {
   document.getElementById('email').value = email;
   document.getElementById('telefono').value = telefono;
   añadirNifDesactivado(nif);
-  document.getElementById('formulario').appendChild();
 }
 
+/**
+ * Creamos un elemento input y lo introducimos en el html con los datos del nif.
+ * Le agregamos el atributo disabled para que no se pueda cambiar.
+ * @param {string} nif
+ */
 function añadirNifDesactivado(nif) {
   const formulario = document.getElementById('formulario');
-  const html = `<div class="mb-4"> <label class="block text-gray-700 text-sm font-bold mb-2" for="nif">Nif</label><input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline value=${nif} auto-validable" id="hora" name="hora" type="time" required/> </div>`;
-  console.log(formulario);
-  formulario.appendChild(html);
+  const divForm = document.createElement('div');
+  divForm.classList.add('mb-4');
+  formulario.appendChild(divForm);
+  divForm.innerHTML = `<label class="block text-gray-700 text-sm font-bold mb-2" for="nif">Nif</label><input value="${nif}" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline auto-validable" id="nif" name="nif" type="text" required/>`;
+  document.getElementById('nif').setAttribute('disabled', '');
 }
 
 /**
