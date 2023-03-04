@@ -3,7 +3,6 @@ import { ControladorPHP as Controlador } from './controlador.js';
 listeners();
 invalidarFormulario();
 enfocarPrimerElementoFormulario();
-// marcarPrimerElementoEnRojo();
 
 /**
  * Creamos los listeners para el correcto funcionamiento de la página.
@@ -20,10 +19,23 @@ function listeners() {
   }
 }
 
+/**
+ * Recoge los datos de la cita del localStorage y los devuleve en forna de objeto.
+ * @returns objeto datos cita
+ */
+function obtenerInformacionCita() {
+  return (datos = {
+    fecha: localStorage.getItem('fecha'),
+    hora: localStorage.getItem('hora'),
+    id: localStorage.getItem('idCita'),
+  });
+}
+
+/**
+ * Obtiene fecha y hora de obtenerInformacionCita y los introduce en los input de fecha y hora del form, luego obtiene descripción y detalles, llamando a un método del controlador que devuelve la cita mediante su id, y los introduce en los input de descripción y detalles.
+ */
 async function cargarInformacion() {
-  const fecha = localStorage.getItem('fecha');
-  const hora = localStorage.getItem('hora');
-  const id = localStorage.getItem('idCita');
+  const { fecha, hora, id } = obtenerInformacionCita();
   const datos = await Controlador.getCita(id);
   const descripcion = datos.datos[0].descripcion;
   const detalles = datos.datos[0].detalles;

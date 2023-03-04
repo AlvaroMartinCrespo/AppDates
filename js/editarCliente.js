@@ -3,6 +3,9 @@ import { ControladorPHP as Controlador } from './controlador.js';
 listeners();
 enfocarPrimerElementoFormulario();
 
+/**
+ * Función que se inicia al princio para que funcionen los botones de la página y distintas funcionalidades.
+ */
 function listeners() {
   window.addEventListener('load', cargarInformacion, false);
   window.addEventListener('click', redireccionarAListaClientes, false);
@@ -27,8 +30,12 @@ function enfocarPrimerElementoFormulario() {
   inputs[0].focus();
 }
 
-function datos() {
-  return (datos = {
+/**
+ * Obtiene los datos del cliente del localStorage
+ * @returns objeto datos cliente
+ */
+function datosCliente() {
+  return (datosCliente = {
     nombre: localStorage.getItem('nombre'),
     apellidos: localStorage.getItem('apellidos'),
     email: localStorage.getItem('email'),
@@ -38,10 +45,10 @@ function datos() {
 }
 
 /**
- * Carga el nombre y apellido del usuario para mostrarlo en pantalla.
+ * Obtiene los datos del cliente de la función datosCliente, y los inserta en los inputs del furmulario
  */
 function cargarInformacion() {
-  const { nombre, apellidos, email, telefono, nif } = datos();
+  const { nombre, apellidos, email, telefono, nif } = datosCliente();
   document.getElementById('nombreCliente').innerHTML = `${nombre} ${apellidos}`;
   document.getElementById('nombre').value = nombre;
   document.getElementById('apellidos').value = apellidos;
@@ -118,6 +125,10 @@ function marcarPrimerElementoEnRojo() {
   }
 }
 
+/**
+ * Por cada input comprueba si el elemento se ha corregido o no.
+ * @param {evento} e
+ */
 function correccionCampo(e) {
   if (e.target.checkValidity()) {
     document.getElementById(`error-${e.target.name}`).innerHTML = '';

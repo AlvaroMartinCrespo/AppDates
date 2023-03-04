@@ -223,6 +223,12 @@ export class ControladorPHP {
     return respuestaJSON;
   }
 
+  /**
+   * Recibe un objeto cliente con sus datos y envía una petición al servidor con los datos y el método de actualizar cliente.
+   * Por último el servidor mandará una respuesta.
+   * @param {object} cliente
+   * @returns respuesta servidor JSON
+   */
   static async actualizarCliente(cliente) {
     let respuestaJSON = null;
     try {
@@ -243,6 +249,12 @@ export class ControladorPHP {
     return respuestaJSON;
   }
 
+  /**
+   * Recibe un objeto con los datos de la cita, los envía junto con el método actualizarCita al servidor.
+   * Luego el servidor mandará la respuesta.
+   * @param {object} cita
+   * @returns respuesta servidor JSON
+   */
   static async actualizarCita(cita) {
     let respuestaJSON = null;
     try {
@@ -263,6 +275,11 @@ export class ControladorPHP {
     return respuestaJSON;
   }
 
+  /**
+   * Función de utilidad que al pasarle por parámetros un id de una cita te duvuelve la cita con todos sus datos.
+   * @param {number} id
+   * @returns respuesta cita servidor JSON
+   */
   static async getCita(id) {
     let respuestaJSON = null;
     try {
